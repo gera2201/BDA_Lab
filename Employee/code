@@ -1,0 +1,80 @@
+bmsce@bmsce-OptiPlex-3060:~$ cqlsh
+Connected to Test Cluster at 127.0.0.1:9042.
+[cqlsh 5.0.1 | Cassandra 3.11.12 | CQL spec 3.4.4 | Native protocol v4]
+Use HELP for help.
+cqlsh> CREATE KEYSPACE Employee1 WITH REPLICATION={'class':'SimpleStrategy','replication_factor':1};
+cqlsh> USE Employee1
+   ... ;
+cqlsh:employee1> CREATE TABLE Employee_Info (Emp_id int PRIMARY KEY, Emp_Name text,Designation text,Date_Of_Joining timestamp, salary double, Dept_name text);
+cqlsh:employee1> BEGIN BATCH 
+             ... INSERT INTO Employee_Info(Emp_id, Emp_Name, Designation, Date_Of_Joining, salary, Dept_name)
+             ...  VALUES (120,'Bharath','Manager','2021-04-01',30000.0,'CSE')
+             ... INSERT INTO Employee_Info(Emp_id, Emp_Name, Designation, Date_Of_Joining, salary, Dept_name)
+             ... VALUES (121,'Rahul','Emp','2019-04-20',20000.0,'CSE')
+             ... INSERT INTO Employee_Info(Emp_id, Emp_Name, Designation, Date_Of_Joining, salary, Dept_name)
+             ... VALUES (122,'Dakshinamurthy','Emp','2019-05-01',22000.0,'CSE')
+             ... INSERT INTO Employee_Info(Emp_id, Emp_Name, Designation, Date_Of_Joining, salary, Dept_name)
+             ... VALUES (123,'Rohan','Emp','2020-08-01',22500.0,'CSE')
+             ... INSERT INTO Employee_Info(Emp_id, Emp_Name, Designation, Date_Of_Joining, salary, Dept_name)
+             ... VALUES (124,'Rohan','Emp','2019-06-01',21000.0,'CSE')
+             ... apply batch;
+cqlsh:employee1> select * from Employee_Info;
+
+ emp_id | date_of_joining                 | dept_name | designation | emp_name       | salary
+--------+---------------------------------+-----------+-------------+----------------+--------
+    120 | 2021-03-31 18:30:00.000000+0000 |       CSE |     Manager |        Bharath |  30000
+    123 | 2020-07-31 18:30:00.000000+0000 |       CSE |         Emp |          Rohan |  22500
+    122 | 2019-04-30 18:30:00.000000+0000 |       CSE |         Emp | Dakshinamurthy |  22000
+    121 | 2019-04-19 18:30:00.000000+0000 |       CSE |         Emp |          Rahul |  20000
+    124 | 2019-05-31 18:30:00.000000+0000 |       CSE |         Emp |          Rohan |  21000
+
+(5 rows)
+cqlsh:employee1> UPDATE Employee_Info SET Emp_Name='Rahul', Dept_name='ECE' WHERE Emp_id=121;
+cqlsh:employee1> select * from Employee_Info;
+
+ emp_id | date_of_joining                 | dept_name | designation | emp_name       | salary
+--------+---------------------------------+-----------+-------------+----------------+--------
+    120 | 2021-03-31 18:30:00.000000+0000 |       CSE |     Manager |        Bharath |  30000
+    123 | 2020-07-31 18:30:00.000000+0000 |       CSE |         Emp |          Rohan |  22500
+    122 | 2019-04-30 18:30:00.000000+0000 |       CSE |         Emp | Dakshinamurthy |  22000
+    121 | 2019-04-19 18:30:00.000000+0000 |       ECE |         Emp |          Rahul |  20000
+    124 | 2019-05-31 18:30:00.000000+0000 |       CSE |         Emp |          Rohan |  21000
+
+(5 rows)
+cqlsh:employee1> ALTER TABLE Employee_Info  ADD Projects text;
+cqlsh:employee1> UPDATE Employee_Info SET Projects='Research'WHERE Emp_id=120;
+cqlsh:employee1> select * from Employee_Info;
+
+ emp_id | date_of_joining                 | dept_name | designation | emp_name       | projects | salary
+--------+---------------------------------+-----------+-------------+----------------+----------+--------
+    120 | 2021-03-31 18:30:00.000000+0000 |       CSE |     Manager |        Bharath | Research |  30000
+    123 | 2020-07-31 18:30:00.000000+0000 |       CSE |         Emp |          Rohan |     null |  22500
+    122 | 2019-04-30 18:30:00.000000+0000 |       CSE |         Emp | Dakshinamurthy |     null |  22000
+    121 | 2019-04-19 18:30:00.000000+0000 |       ECE |         Emp |          Rahul |     null |  20000
+    124 | 2019-05-31 18:30:00.000000+0000 |       CSE |         Emp |          Rohan |     null |  21000
+
+(5 rows)
+cqlsh:employee1> UPDATE Employee_Info SET Projects='Data Migration'WHERE Emp_id=123;
+cqlsh:employee1> UPDATE Employee_Info SET Projects='Data analysis'WHERE Emp_id=122;
+cqlsh:employee1> UPDATE Employee_Info SET Projects='Reporting'WHERE Emp_id=121;
+cqlsh:employee1> UPDATE Employee_Info SET Projects='Research'WHERE Emp_id=124;
+cqlsh:employee1> UPDATE Employee_Info SET Projects='Reporting'WHERE Emp_id=121;
+cqlsh:employee1> select * from Employee_Info;
+
+ emp_id | date_of_joining                 | dept_name | designation | emp_name       | projects       | salary
+--------+---------------------------------+-----------+-------------+----------------+----------------+--------
+    120 | 2021-03-31 18:30:00.000000+0000 |       CSE |     Manager |        Bharath |       Research |  30000
+    123 | 2020-07-31 18:30:00.000000+0000 |       CSE |         Emp |          Rohan | Data Migration |  22500
+    122 | 2019-04-30 18:30:00.000000+0000 |       CSE |         Emp | Dakshinamurthy |  Data analysis |  22000
+    121 | 2019-04-19 18:30:00.000000+0000 |       ECE |         Emp |          Rahul |      Reporting |  20000
+    124 | 2019-05-31 18:30:00.000000+0000 |       CSE |         Emp |          Rohan |       Research |  21000
+
+(5 rows)
+cqlsh:employee1> INSERT INTO Employee_Info(Emp_id, Emp_Name, Designation, Date_Of_Joining, salary, Dept_name) VALUES (125,'Anya','Emp','2021-04-01',25000.0,'CSE') using ttl 15;
+cqlsh:employee1> select ttl(Emp_Name) from Employee_Info Where Emp_id=125;
+
+ ttl(emp_name)
+---------------
+             3
+
+(1 rows)
