@@ -1,0 +1,139 @@
+hduser@bmsce-Precision-T1700:~$ sudo su hduser
+[sudo] password for hduser:
+hduser@bmsce-Precision-T1700:~$ start-all.sh
+This script is Deprecated. Instead use start-dfs.sh and start-yarn.sh
+Starting namenodes on [localhost]
+hduser@localhost's password:
+localhost: starting namenode, logging to /usr/local/hadoop/logs/hadoop-hduser-namenode-bmsce-Precision-T1700.out
+hduser@localhost's password:
+localhost: starting datanode, logging to /usr/local/hadoop/logs/hadoop-hduser-datanode-bmsce-Precision-T1700.out
+Starting secondary namenodes [0.0.0.0]
+hduser@0.0.0.0's password:
+0.0.0.0: starting secondarynamenode, logging to /usr/local/hadoop/logs/hadoop-hduser-secondarynamenode-bmsce-Precision-T1700.out
+starting yarn daemons
+starting resourcemanager, logging to /usr/local/hadoop/logs/yarn-hduser-resourcemanager-bmsce-Precision-T1700.out
+hduser@localhost's password:
+localhost: starting nodemanager, logging to /usr/local/hadoop/logs/yarn-hduser-nodemanager-bmsce-Precision-T1700.out
+hduser@bmsce-Precision-T1700:~$ jps
+6512 ResourceManager
+6353 SecondaryNameNode
+5953 NameNode
+6133 DataNode
+6968 Jps
+6846 NodeManager
+hduser@bmsce-Precision-T1700:~$ hdfs dfs-mkdir /bharath
+Error: Could not find or load main class dfs-mkdir
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -mkdir /bharath
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -touchz /bharath/myfile
+hduser@bmsce-Precision-T1700:~$ vi downloads/testfile
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -cp /downloads/testfile  /bharath
+cp: `/downloads/testfile': No such file or directory
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -cp /downloads/testfile /bharath
+cp: `/downloads/testfile': No such file or directory
+hduser@bmsce-Precision-T1700:~$ ls downloads
+file1.txt  file2.txt  file3.txt  testfile
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -cp /downloads/testfile /bharath/
+cp: `/downloads/testfile': No such file or directory
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -cp /downloads/testfile /bharath
+cp: `/downloads/testfile': No such file or directory
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -cp downloads/testfile /bharath/
+cp: `downloads/testfile': No such file or directory
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -cp downloads/testfile /bharath
+cp: `downloads/testfile': No such file or directory
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -ls downloads
+ls: `downloads': No such file or directory
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -ls
+ls: `.': No such file or directory
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -ls /
+Found 7 items
+drwxr-xr-x   - hduser supergroup          0 2022-06-03 12:20 /Nishu
+drwxr-xr-x   - hduser supergroup          0 2022-06-03 12:45 /Shree
+drwxr-xr-x   - hduser supergroup          0 2022-06-03 14:31 /bharath
+-rw-r--r--   1 hduser supergroup         33 2022-06-03 12:11 /nishu
+drwxrwxr-x   - hduser supergroup          0 2019-08-01 16:19 /tmp
+drwxr-xr-x   - hduser supergroup          0 2019-08-01 16:03 /user
+drwxr-xr-x   - hduser supergroup          0 2022-06-01 15:23 /user1
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -put downloads/testfile /bharath
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -ls /
+Found 7 items
+drwxr-xr-x   - hduser supergroup          0 2022-06-03 12:20 /Nishu
+drwxr-xr-x   - hduser supergroup          0 2022-06-03 12:45 /Shree
+drwxr-xr-x   - hduser supergroup          0 2022-06-03 14:48 /bharath
+-rw-r--r--   1 hduser supergroup         33 2022-06-03 12:11 /nishu
+drwxrwxr-x   - hduser supergroup          0 2019-08-01 16:19 /tmp
+drwxr-xr-x   - hduser supergroup          0 2019-08-01 16:03 /user
+drwxr-xr-x   - hduser supergroup          0 2022-06-01 15:23 /user1
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -put downloads/testfile /bharath/
+put: `/bharath/testfile': File exists
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -ls /bharath
+Found 2 items
+-rw-r--r--   1 hduser supergroup          0 2022-06-03 14:31 /bharath/myfile
+-rw-r--r--   1 hduser supergroup         25 2022-06-03 14:48 /bharath/testfile
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -get /bharath/myfile /downloads/copiedfile
+get: `/downloads/copiedfile': No such file or directory
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -get /bharath/myfile /downloads/
+get: `/downloads/': No such file or directory
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -get /bharath/myfile /downloads
+get: /downloads._COPYING_ (Permission denied)
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -get /bharath/myfile Downloads/
+hduser@bmsce-Precision-T1700:~$ pwd
+/home/hduser
+hduser@bmsce-Precision-T1700:~$ ls
+ 1BM18CS034                                     PT72Installer
+ circle.class                                   Public
+ databank.java                                  R
+ derby.log                                      re.class
+ desktop                                        rect.class
+ Desktop                                        rshape.class
+ Documents                                      rshape.java
+ downloads                                      shape.class
+ Downloads                                      stack.class
+ examples.desktop                               stacktest.class
+ first.csv                                      stacktest.java
+ hadoop-2.6.0.tar.gz                            stacktests.class
+ hive                                           Templates
+ metastore_db                                   Timecalc.class
+ Music                                          Time.class
+ nisarga                                        Time.java
+'Packet Tracer 7.2.1 for Linux 64 bit.tar.gz'   toinstalledlist
+ Pictures                                       tri.class
+ pig_1564816082257.log                          Videos
+ pig_1599287655915.log                          xyz.txt
+ pt
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -mkdir /dakshin
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -touchz /dakshin/file1
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -ls
+ls: `.': No such file or directory
+hduser@bmsce-Precision-T1700:~$
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -ls/
+-ls/: Unknown command
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -ls /
+Found 8 items
+drwxr-xr-x   - hduser supergroup          0 2022-06-03 12:20 /Nishu
+drwxr-xr-x   - hduser supergroup          0 2022-06-03 12:45 /Shree
+drwxr-xr-x   - hduser supergroup          0 2022-06-03 15:03 /dakshin
+drwxr-xr-x   - hduser supergroup          0 2022-06-03 14:48 /bharath
+-rw-r--r--   1 hduser supergroup         33 2022-06-03 12:11 /nishu
+drwxrwxr-x   - hduser supergroup          0 2019-08-01 16:19 /tmp
+drwxr-xr-x   - hduser supergroup          0 2019-08-01 16:03 /user
+drwxr-xr-x   - hduser supergroup          0 2022-06-01 15:23 /user1
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -ls/dakshin
+-ls/dakshin: Unknown command
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -ls/dakshin/
+-ls/dakshin/: Unknown command
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -ls /dakshin/
+Found 1 items
+-rw-r--r--   1 hduser supergroup          0 2022-06-03 15:03 /dakshin/file1
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -cp /dakshin/file1 /bharath/
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -ls /bharath/
+Found 3 items
+-rw-r--r--   1 hduser supergroup          0 2022-06-03 15:13 /bharath/file1
+-rw-r--r--   1 hduser supergroup          0 2022-06-03 14:31 /bharath/myfile
+-rw-r--r--   1 hduser supergroup         25 2022-06-03 14:48 /bharath/testfile
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -mv /dakshin/file1 /bharath/copiedfile
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -ls /bharath/
+Found 4 items
+-rw-r--r--   1 hduser supergroup          0 2022-06-03 15:03 /bharath/copiedfile
+-rw-r--r--   1 hduser supergroup          0 2022-06-03 15:13 /bharath/file1
+-rw-r--r--   1 hduser supergroup          0 2022-06-03 14:31 /bharath/myfile
+-rw-r--r--   1 hduser supergroup         25 2022-06-03 14:48 /bharath/testfile
